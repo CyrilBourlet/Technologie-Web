@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TD2</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>Convertisseur Celsius → Fahrenheit</h1>
+        Température en Celsius:<input type="number" v-model.number="celsius" placeholder="Entrez la température en °C" />
+        <p v-if="celsius >= 100">L'eau bout à cette température !</p>
+        <p>Température en Fahrenheit : {{ convertirEnFahrenheit(celsius) }} °F</p>
+    </div>
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    celsius: 0
+                };
+            },
+            methods: {
+                convertirEnFahrenheit(celsius) {
+                    return (celsius * 9/5) + 32;
+                }
+            }
+        });
+
+        let objetApp = app.mount('#app');
+    </script>
+</body>
+</html>

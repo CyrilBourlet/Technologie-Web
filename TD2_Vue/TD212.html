@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Réservation d'Hôtel</title>
+  <script src=" https://cdn.jsdelivr.net/npm/vue@3"></script>
+</head>
+<body>
+  <div id="app">
+    <form @submit.prevent="validerReservation">
+      <h2>Formulaire de Réservation d'Hôtel</h2>
+
+      <!-- Champ de saisie pour le nom -->
+      <label for="nom">Nom :</label>
+      <input type="text" id="nom" v-model="nom" required />
+
+      <!-- Champ de saisie pour l'email -->
+      <label for="email">Email :</label>
+      <input type="email" id="email" v-model="email" required />
+
+      <!-- Champ de saisie pour la date d'arrivée -->
+      <label for="dateArrivee">Date d'arrivée :</label>
+      <input type="date" id="dateArrivee" v-model="dateArrivee" @change="calculerNbNuits" required />
+
+      <!-- Champ de saisie pour la date de départ -->
+      <label for="dateDepart">Date de départ :</label>
+      <input type="date" id="dateDepart" v-model="dateDepart" @change="calculerNbNuits" required />
+
+      <!-- Bouton de soumission -->
+      <button type="submit">Valider la Réservation</button>
+    </form>
+
+    <!-- Affichage des détails de réservation -->
+    <div v-if="reservationValidee" class="reservation-details">
+      <h3>Détails de la Réservation</h3>
+      <p>Nom : {{ nom }}</p>
+      <p>Email : {{ email }}</p>
+      <p>Date d'arrivée : {{ dateArrivee }}</p>
+      <p>Date de départ : {{ dateDepart }}</p>
+      <p>Nombre de nuits : {{ nbNuits }}</p>
+      <p>Coût total : {{ nbNuits * tarif }}€</p>
+    </div>
+  </div>
+
+  <script>
+    const { createApp, ref } = Vue;
+
+    createApp({
+      setup() {
+        const nom = ref('');
+        const email = ref('');
+        const dateArrivee = ref('');
+        const dateDepart = ref('');
+        const nbNuits = ref(0);
+        const tarif = ref(100);
+        const reservationValidee = ref(false);
+
+        const calculerNbNuits = () => {
+          if (dateArrivee.value && dateDepart.value) {
+            const arrivee = new Date(dateArrivee.value);
+            const depart = new Date(dateDepart.value);
+            const diffTemps = depart - arrivee;
+            nbNuits.value = diffTemps > 0 ? diffTemps / (1000 * 60 * 60 * 24) : 0;
+          } else {
+            nbNuits.value = 0;
+          }
+        };
+
+        const validerReservation = () => {
+          if (nom.value && email.value && dateArrivee.value && dateDepart.value && nbNuits.value > 0) {
+            reservationValidee.value = true;
+          } else {
+            alert('Veuillez vérifier les informations de votre réservation.');
+          }
+        };
+
+        return {
+          nom,
+          email,
+          dateArrivee,
+          dateDepart,
+          nbNuits,
+          tarif,
+          reservationValidee,
+          calculerNbNuits,
+          validerReservation
+        };
+      }
+    }).mount('#app');
+  </script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 15px;
+    }
+    .reservation-details {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      background-color: #f9f9f9;
+    }
+  </style>
+</body>
+</html>

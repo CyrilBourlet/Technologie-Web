@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vue.js 2</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>{{ compteur }}</h1>
+        <button v-on:click="incrementerCompteur">Incrémenter</button>
+        <button @click="decrementerCompteur">Décrémenter</button>
+    </div>
+
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                compteur: 0
+            },
+            methods: {
+                incrementerCompteur() {
+                    this.compteur++;
+                },
+                decrementerCompteur() {
+                    this.compteur--;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

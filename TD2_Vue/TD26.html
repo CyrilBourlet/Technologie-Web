@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TD2</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model="nom" placeholder="Entrez votre nom" />
+        <button @click="afficherMessage">Afficher le message de bienvenue</button>
+        <p v-if="messageBienvenue" v-bind>{{ messageBienvenue }}</p>
+    </div>
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    nom: '',
+                    messageBienvenue: ''
+                };
+            },
+
+            methods: {
+                afficherMessage() {
+                    if(this.nom.trim() !== '') {
+                        this.messageBienvenue = `Bienvenue, ${this.nom} !`;
+                    } else {
+                        this.messageBienvenue = '';
+                    }
+                }
+            }
+        });
+
+        //creer instance du composant
+        let objetApp = app.mount('#app');
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TD2</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="checkbox" v-model="isChecked" id="checkbox">
+        <label for="checkbox">{{ isChecked ? 'Coché' : 'Décoché' }}</label>
+    </div>
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    isChecked: false
+                };
+            },
+
+
+        });
+
+        //creer instance du composant
+        let objetApp = app.mount('#app');
+
+    </script>
+</body>
+</html>

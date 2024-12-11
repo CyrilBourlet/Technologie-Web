@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuperPower Matcher</title>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://unpkg.com/axios@latest"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <!-- barre de navigation -->
+    <div id="navbarplaceholder"></div>
+
+    <div id="app" class="container my-4">
+        <!-- titre -->
+        <h1 class="mb-4">SuperPower Matcher</h1>
+
+        <!-- Formulaire de sélection de seuils pour les superpouvoirs -->
+        <h5>Définissez les seuils minimaux pour chaque superpouvoir :</h5>
+
+        <div v-for="(value, power) in powerThresholds" :key="power" class="mb-3">
+            <label :for="power" class="form-label">{{ power }} : {{ value }}</label>
+            <input type="range" class="form-range" v-model="powerThresholds[power]" :min="0" :max="100">
+        </div>
+
+        <button class="btn btn-primary my-3" @click="findSuperheroes">Trouver des super-héros</button>
+
+        <!-- Affichage des super-héros correspondants -->
+        <h3 v-if="filteredSuperheroes.length">Super-héros correspondants :</h3>
+        <ul class="list-group" v-if="filteredSuperheroes.length">
+            <li v-for="hero in filteredSuperheroes" :key="hero.id" class="list-group-item d-flex justify-content-between align-items-center">
+                <h5>{{ hero.name }}</h5>
+                <img class="rounded-circle" width="50px" :src="hero.images.md" alt="Image de {{ hero.name }}">
+            </li>
+        </ul>
+        <p v-else>Aucun super-héros ne correspond à votre sélection.</p>
+    </div>
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    superheros: [], // Liste complète des super-héros
+                    filteredSuperheroes: [], // Liste des super-héros filtrés selon les seuils
+                    powerThresholds: { // Seuils minimaux pour chaque superpouvoir
+                        intelligence: 50,
+                        strength: 50,
+                        speed: 50,
+                        durability: 50,
+                        power: 50,
+                        combat: 50
+                    }
+                };
+            },
+
+            methods: {
+                // Filtrer les super-héros en fonction des seuils définis par les barres glissantes
+                findSuperheroes() {
+                    this.filteredSuperheroes = this.superheros.filter(hero => {
+                        // Vérifier que chaque pouvoir du héros est supérieur au seuil minimal défini
+                        return Object.keys(this.powerThresholds).every(power => {
+                            return hero.powerstats[power] >= this.powerThresholds[power];
+                        });
+                    });
+                }
+            },
+
+            mounted() {
+                // Charger la barre de navigation
+                fetch('navbar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('navbarplaceholder').innerHTML = data;
+                })
+                .catch(error => console.log(error));
+
+                // Charger la liste des super-héros via Axios
+                axios.get('https://cdn.jsdelivr.net/gh/rtomczak/superhero-api@0.3.0/api/all.json')
+                .then(response => {
+                    this.superheros = response.data; // Stocker les données des super-héros
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+            }
+        });
+
+        app.mount('#app');
+    </script>
+</body>
+</html>

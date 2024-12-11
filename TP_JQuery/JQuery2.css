@@ -1,0 +1,11 @@
+p.petit {
+    font-size: 1em; /* Taille de police par défaut */
+}
+
+p.grand {
+    font-size: 3em; /* Taille de police agrandie */
+}
+
+div {
+    text-align: center; /* Aligne le texte au centre */
+}

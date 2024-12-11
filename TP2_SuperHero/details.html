@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails du Superhéros</title>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://unpkg.com/axios@latest"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+    <div id="navbarplaceholder"></div> <!-- Placeholder pour la barre de navigation -->
+
+    <div id="app" class="container my-5">
+        <!-- Section nom et image -->
+        <div v-if="superhero" class="text-center mb-4">
+            <h1 class="display-4 fw-bold">{{ superhero.name }}</h1>
+            <img v-if="superhero" :src="superhero.images.lg" alt="image de {{ superhero.name }}" class="img-fluid rounded shadow-sm" style="max-width: 300px;">
+        </div>
+
+        <!-- Section détails -->
+        <div v-if="superhero" class="card shadow-sm">
+            <div class="card-body">
+                <!-- Statistiques -->
+                <h5 class="card-title text-primary">Statistiques</h5>
+                <ul class="list-group list-group-flush mb-4">
+                    <li class="list-group-item">Intelligence : {{ superhero.powerstats.intelligence }}</li>
+                    <li class="list-group-item">Force : {{ superhero.powerstats.strength }}</li>
+                    <li class="list-group-item">Vitesse : {{ superhero.powerstats.speed }}</li>
+                    <li class="list-group-item">Durabilité : {{ superhero.powerstats.durability }}</li>
+                    <li class="list-group-item">Puissance : {{ superhero.powerstats.power }}</li>
+                    <li class="list-group-item">Combat : {{ superhero.powerstats.combat }}</li>
+                </ul>
+
+                <!-- Apparence -->
+                <h5 class="card-title text-primary">Apparence</h5>
+                <ul class="list-group list-group-flush mb-4">
+                    <li class="list-group-item">Genre : {{ superhero.appearance.gender }}</li>
+                    <li class="list-group-item">Race : {{ superhero.appearance.race }}</li>
+                    <li class="list-group-item">Taille : {{ superhero.appearance.height.join(' / ') }}</li>
+                    <li class="list-group-item">Poids : {{ superhero.appearance.weight.join(' / ') }}</li>
+                    <li class="list-group-item">Couleur des yeux : {{ superhero.appearance.eyeColor }}</li>
+                    <li class="list-group-item">Couleur des cheveux : {{ superhero.appearance.hairColor }}</li>
+                </ul>
+
+                <!-- Biographie -->
+                <h5 class="card-title text-primary">Biographie</h5>
+                <ul class="list-group list-group-flush mb-4">
+                    <li class="list-group-item">Nom complet : {{ superhero.biography.fullName }}</li>
+                    <li class="list-group-item">Alias : {{ superhero.biography.aliases.join(', ') }}</li>
+                    <li class="list-group-item">Lieu de naissance : {{ superhero.biography.placeOfBirth }}</li>
+                    <li class="list-group-item">Première apparition : {{ superhero.biography.firstAppearance }}</li>
+                    <li class="list-group-item">Éditeur : {{ superhero.biography.publisher }}</li>
+                    <li class="list-group-item">Alignement : {{ superhero.biography.alignment }}</li>
+                </ul>
+
+                <!-- Travail -->
+                <h5 class="card-title text-primary">Travail</h5>
+                <ul class="list-group list-group-flush mb-4">
+                    <li class="list-group-item">Occupation : {{ superhero.work.occupation }}</li>
+                    <li class="list-group-item">Base : {{ superhero.work.base }}</li>
+                </ul>
+
+                <!-- Connexions -->
+                <h5 class="card-title text-primary">Connexions</h5>
+                <ul class="list-group list-group-flush mb-4">
+                    <li class="list-group-item">Affiliation : {{ superhero.connections.groupAffiliation }}</li>
+                    <li class="list-group-item">Famille : {{ superhero.connections.relatives }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Récupérer l'ID du super-héros depuis le localStorage
+        const superheroId = localStorage.getItem("superherosID");
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    superhero: null,
+                }
+            },
+            mounted() {
+                if (superheroId) {
+                    // Requête pour récupérer les détails du super-héros avec Axios
+                    axios.get('https://cdn.jsdelivr.net/gh/rtomczak/superhero-api@0.3.0/api/all.json')
+                        .then(response => {
+                            const superheros = response.data;
+                            this.superhero = superheros.find(hero => hero.id == superheroId);
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                } else {
+                    console.log('ID de super-héros non fourni');
+                }
+                
+                // Charger la barre de navigation
+                fetch('navbar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('navbarplaceholder').innerHTML = data;
+                })
+                .catch(error => console.log(error));
+            }
+        });
+
+        app.mount('#app');
+    </script>
+</body>
+</html>

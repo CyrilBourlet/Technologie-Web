@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TD2</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
+</head>
+<body>
+    <div id="app">
+        <ul>
+            <li v-for="fruit in fruits" :key="fruit.id">
+                {{ `Le ${fruit.nom} a une longueur de ${fruit.nom.length} caracteres.` }}
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    fruits:[
+                    { id: 1, nom: 'Banane' },
+                    { id: 2, nom: 'Pomme' },
+                    { id: 3, nom: 'Poire' },
+                    { id: 4, nom: 'Mangue' },
+                    { id: 5, nom: 'Cerise' }
+                    ]
+                };
+            }
+        });
+
+        //creer instance du composant
+        let objetApp = app.mount('#app');
+
+    </script>
+</body>
+</html>

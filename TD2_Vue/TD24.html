@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TD2</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
+</head>
+<body>
+    <div id="app">
+        <textarea v-model="texte" name="texte" id="textarea"></textarea>
+        <p>nombre de mots: {{nbmot}}</p>
+    </div>
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    texte: '',
+                    nbmot: 0
+                };
+            },
+        
+            watch:{
+                texte(newText){
+                    this.nbmot = newText.split(' ').filter(n => n != '').length;
+                },
+            }
+        });
+
+        //creer instance du composant
+        let objetApp = app.mount('#app');
+    </script>
+</body>
+</html>

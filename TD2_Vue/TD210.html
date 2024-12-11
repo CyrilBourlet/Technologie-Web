@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TD2</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>Welcome Bienvenue ¡Bienvenido</h1>
+        <button @click="changerLangue('en')">Anglais</button>
+        <button @click="changerLangue('fr')">Français</button>
+        <button @click="changerLangue('es')">Espagnol</button>
+
+        <p v-if="langue === 'en'">Welcome!</p>
+        <p v-else-if="langue === 'fr'">Bienvenue !</p>
+        <p v-else-if="langue === 'es'">¡Bienvenido!</p>
+    </div>
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    langue: 'en'
+                };
+            },
+            methods: {
+                changerLangue(nouvelleLangue) {
+                    this.langue = nouvelleLangue;
+                }
+            }
+        });
+
+        //creer instance du composant
+        let objetApp = app.mount('#app');
+
+    </script>
+</body>
+</html>

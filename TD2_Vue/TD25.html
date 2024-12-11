@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Condition avec v-if</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+  <div id="app">
+    <h2>Exercice de condition avec v-if</h2>
+    <!-- Affichage conditionnel avec v-if -->
+    <p v-if="isTrue">La condition est vraie</p>
+    <p v-else>La condition est fausse</p>
+
+    <!-- Bouton pour changer la condition -->
+    <button @click="toggleCondition">Changer la condition</button>
+  </div>
+
+  <script>
+    const { createApp, ref } = Vue;
+
+    createApp({
+      setup() {
+        // Étape 2 : Définir une propriété isTrue avec une valeur initiale de true
+        const isTrue = ref(true);
+
+        // Fonction pour inverser la valeur de isTrue
+        const toggleCondition = () => {
+          isTrue.value = !isTrue.value;
+        };
+
+        return {
+          isTrue,
+          toggleCondition
+        };
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>

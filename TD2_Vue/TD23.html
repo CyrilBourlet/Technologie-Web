@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TD2</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
+</head>
+<body>
+    <div id="app">
+        <input v-model="prix" type="number" name="montantHT" id="pr">
+        <p>Montant TTC: {{calculerTTC.toFixed(2)}}€</p>
+    </div>
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    prix: 0
+                };
+            },
+        
+        computed:{
+            calculerTTC(){
+                return this.prix*1.2;
+            },
+        }
+        });
+
+        //creer instance du composant
+        let objetApp = app.mount('#app');
+    </script>
+</body>
+</html>
